@@ -6,7 +6,7 @@ const helper = {
   addComponent: function(books) {
     const markup = ` 
         ${books.map(book => 
-            `<div class="col s12 m6 l3 ui-state-default ui-sortable-handle">           
+            `<div class="col s12 m6 l3 ui-state-default ui-sortable-handle" id="component_${book.id}">           
                 <div class="card">
                     <div class="card-image">
                         <img id="img_${book.id}" src="${book.image}">
@@ -17,7 +17,7 @@ const helper = {
                     </div>
                     <div class="card-action">
                         <a class="edit waves-effect waves-light btn modal-trigger" data-datac="${book.id}" href="#modalEdit1">EDIT</a>
-                        <a class="delete" data-datac="${book.id}">DELETE</a>
+                        <a class="delete waves-effect waves-light btn" id="delete" data-datac="${book.id}">DELETE</a>
                     </div>
                 </div>            
             </div>`
@@ -34,13 +34,35 @@ const helper = {
       html_att.setAttribute('data-datac', id);
     });
 
+    $('.delete').click(e => {
+      let id = $(e.currentTarget).data('datac');
+      this.deleteComponent(id);
+    });
+
     $('.modal-trigger').leanModal();
   },
   updateComponent: function(book, id) {
     book.map(b => {
-      $(`#desc_${id}`).attr('text', b.description);
+      $(`#desc_${id}`).text(b.description);
       $(`#img_${id}`).attr('src', b.image);
     })
+  },
+  deleteComponent: function(id) {
+    fetch(`http://localhost:8080/${id}/delete`, {
+      method: 'DELETE'
+    })    
+    .then(res => {
+      if (!res.ok) {
+        throw new Error()
+      }
+      
+      $(`#component_${id}`).remove()
+      
+    })
+    .catch(err =>
+      console.log('Error on deleting')
+    );
+
   }
 }
 

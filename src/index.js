@@ -1,5 +1,6 @@
 import helper from "./helper";
 
+
 $(document).ready(() => {
     
   fetchData();
@@ -110,4 +111,5 @@ $(document).ready(() => {
       console.log('error on creating occured')
     );
   }
+
 })
