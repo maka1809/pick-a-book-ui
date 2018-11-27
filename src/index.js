@@ -1,30 +1,31 @@
-import helper from "./helper";
-
+import helper from "./helper"
+import { HOST_URL } from "../config"
 
 $(document).ready(() => {
-    
-  fetchData();
 
-  $('.modal-trigger').leanModal();
-  $( "#sortable" ).sortable();
-  $( "#sortable" ).disableSelection();
+  fetchData()
 
-  document.getElementById('modalForm').addEventListener('submit', postBook);
-  document.getElementById('modalEdit').addEventListener('submit', updateComponent);
+  $('.modal-trigger').leanModal()
+  $( "#sortable" ).sortable()
+  $( "#sortable" ).disableSelection()
+
+  document.getElementById('modalForm').addEventListener('submit', postBook)
+  document.getElementById('modalEdit').addEventListener('submit', updateComponent)
 
   /** 
    * GET: all available book items
   */
   function fetchData() {
-    fetch('http://localhost:8080/')
+    fetch(HOST_URL)
     .then(res => {
       if (!res.ok) {
-        throw new Error();
+        throw new Error()
       }
-      return res.json();
+      return res.json()
     })
     .then(data => {
       helper.addComponent(data)
+      helper.counter(data)
     })
     .catch(err => {
       console.log('error occured')
@@ -35,37 +36,38 @@ $(document).ready(() => {
    * POST: create a new book item
    */
   function postBook(event){
-    event.preventDefault();
+    event.preventDefault()
 
-    let pic = $('#fileToUpload');
-    const imgValidation = helper.imgValidation(pic);
+    let pic = $('#fileToUpload')
+    const imgValidation = helper.imgValidation(pic)
 
     if (imgValidation == false) {
-      console.log('Image type not allowed');
+      console.log('Image type not allowed')
       return;
     }
     
-    let description = $('#description');
-    let title = $('#title');
+    let description = $('#description')
+    let title = $('#title')
 
-    let formData = new FormData();
-    formData.append('book', pic[0].files[0]);
-    formData.append('description', description.val());
-    formData.append('title', title.val());  
+    let formData = new FormData()
+    formData.append('book', pic[0].files[0])
+    formData.append('description', description.val())
+    formData.append('title', title.val())
     
-    fetch('http://localhost:8080/create', {
+    fetch(HOST_URL+'books', {
       method: 'POST',
       body: formData
     })    
     .then(res => {
       if (!res.ok) {
-        throw new Error();
+        throw new Error()
       }
-      return res.json();
+      return res.json()
     })
     .then(data => {
-      helper.addComponent(data);
-      $('#modal1').closeModal();
+      helper.addComponent(data)
+      helper.counter(data)
+      $('#modal1').closeModal()
     })
     .catch(err =>
       console.log('Error on creating element occured')
@@ -78,37 +80,36 @@ $(document).ready(() => {
   function updateComponent(event) {
     event.preventDefault();
 
-    let id = $('#modalEdit1').data('datac');  
-    let pic = $('#fileToUploadEdit');
-    let description = $('#descriptionEdit');
+    let id = $('#modalEdit1').data('datac')
+    let pic = $('#fileToUploadEdit')
+    let description = $('#descriptionEdit')
 
-    const imgValidation = helper.imgValidation(pic);
+    const imgValidation = helper.imgValidation(pic)
     if (imgValidation == false) {
-      console.log('Image type not allowed');
+      console.log('Image type not allowed')
       return;
     }
 
-    let formData = new FormData();
-    formData.append('book', pic[0].files[0]);
-    formData.append('description', description.val());
+    let formData = new FormData()
+    formData.append('book', pic[0].files[0])
+    formData.append('description', description.val())
 
-    fetch(`http://localhost:8080/${id}/update`, {
+    fetch(HOST_URL+`books/${id}`, {
       method: 'PUT',
       body: formData
     })
     .then(res => {
       if (!res.ok) {
-          throw new Error();
+          throw new Error()
       }
-      return res.json();
+      return res.json()
     })
     .then(res => {
-      console.log('Success:', res)
       helper.updateComponent(res, id)
-      $('#modalEdit1').closeModal();
+      $('#modalEdit1').closeModal()
     })
     .catch(err =>
-      console.log('error on creating occured')
+      console.log('error on updating occured')
     );
   }
 
