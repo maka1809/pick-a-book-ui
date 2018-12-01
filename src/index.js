@@ -68,6 +68,7 @@ $(document).ready(() => {
       helper.addComponent(data)
       helper.counter(data)
       $('#modal1').closeModal()
+      document.getElementById("modalForm").reset();
     })
     .catch(err =>
       console.log('Error on creating element occured')
@@ -107,6 +108,7 @@ $(document).ready(() => {
     .then(res => {
       helper.updateComponent(res, id)
       $('#modalEdit1').closeModal()
+      document.getElementById("modalEdit").reset();
     })
     .catch(err =>
       console.log('error on updating occured')

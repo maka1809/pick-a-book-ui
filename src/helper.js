@@ -62,6 +62,7 @@ const helper = {
       
       $(`#component_${id}`).remove()
       this.decreaseCounter(id)
+      Materialize.toast('Card removed!', 3000)
       
     })
     .catch(err =>
