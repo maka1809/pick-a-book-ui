@@ -28,7 +28,7 @@ $(document).ready(() => {
       helper.counter(data)
     })
     .catch(err => {
-      console.log('error occured')
+      helper.notification('We could not processed your request. Please try again.')
     });
   }
 
@@ -42,7 +42,7 @@ $(document).ready(() => {
     const imgValidation = helper.imgValidation(pic)
 
     if (imgValidation == false) {
-      console.log('Image type not allowed')
+      helper.notification('Please select a valid image')
       return;
     }
     
@@ -70,9 +70,9 @@ $(document).ready(() => {
       $('#modal1').closeModal()
       document.getElementById("modalForm").reset();
     })
-    .catch(err =>
-      console.log('Error on creating element occured')
-    );
+    .catch(err => {
+      helper.notification('We could not processed your request. Please try again.')
+    });
   }
 
   /**
@@ -87,7 +87,7 @@ $(document).ready(() => {
 
     const imgValidation = helper.imgValidation(pic)
     if (imgValidation == false) {
-      console.log('Image type not allowed')
+      helper.notification('Please select a valid image')
       return;
     }
 
@@ -111,7 +111,7 @@ $(document).ready(() => {
       document.getElementById("modalEdit").reset();
     })
     .catch(err =>
-      console.log('error on updating occured')
+      helper.notification('We could not processed your request. Please try again.')
     );
   }
 

@@ -66,7 +66,7 @@ const helper = {
       
     })
     .catch(err =>
-      console.log('Error on deleting')
+      this.notification('We could not processed your request. Please try again.')
     );
   },
   counter: function(data) {
@@ -82,6 +82,10 @@ const helper = {
   },
   setCounter: function() {
     $('#counter').text('Available books: ' + this.books.length)
+  },
+  notification: function(msg) {
+    $('#msg').text(msg)
+    $('#notification').openModal();
   }
 }
 
